@@ -5,6 +5,14 @@
     <string name="no_data">No Data</string>
     <string name="str_add_fragment_title">Title</string>
     <string name="str_add_fragment_description">Description</string>
+    <string name="str_menu_search">Search</string>
+    <string name="str_priority_high">Priority High</string>
+    <string name="str_priority_low">Priority Low</string>
+    <string name="str_sort_by">Sort By</string>
+    <string name="str_delete_all">Delete All</string>
+    <string name="str_check">Check</string>
+    <string name="str_save">Save</string>
+    <string name="str_delete">Delete</string>
 
     <string-array name="priorities">
         <item>High Priority</item>

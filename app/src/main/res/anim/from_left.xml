@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="300">
+    <translate
+        android:fromXDelta="-100%"
+        android:toXDelta="0%" />
+</set>
+
+    <!--
+        用 fragment B 替换 fragment A:
+
+        fragment B 运行enter动画   from_right
+        fragment A运行exit动画     to_left
+
+        按下后退按钮并撤消替换操作:
+
+        fragment B 运行 popExit 动画  to_right
+        fragment A运行popEnter动画    from_left
+
+        如果该fragment没有下级页面,则不需要设置当前fragment的Pop动画
+
+    -->

@@ -9,7 +9,7 @@
 
     <!--将主题改为MaterialComponents,FloatingActionButton才能正常inflate-->
     <!--FloatingActionbuttonStyle修改为Design样式是为了能与主题颜色所对应(colorAccent)-->
-    <style name="Theme.TodoApp" parent="Theme.MaterialComponents.Light">
+    <style name="Theme.TodoApp" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>

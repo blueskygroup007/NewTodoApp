@@ -17,7 +17,9 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.bluesky.todoapp.databinding.ActivityMainBinding
 import com.bluesky.todoapp.ui.theme.TodoAppTheme
 
@@ -25,7 +27,6 @@ import com.bluesky.todoapp.ui.theme.TodoAppTheme
 * setupActionBarWithNavController等方法*/
 class MainActivity : AppCompatActivity() {
 
-    //    lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
@@ -33,26 +34,30 @@ class MainActivity : AppCompatActivity() {
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         binding.lifecycleOwner = this
 
-        //val navController = findNavController(R.id.fragmentContainerView)
-        //val navController =binding.fragmentContainerView.getFragment<NavHostFragment>().navController
-        //setupActionBarWithNavController(navController)
-
 
         /*使用fragmentContainerView作为NavHost时,获取NavController的正确方法*/
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
-        setupActionBarWithNavController(navController)
+
+        //setupActionBarWithNavController(navController)
+        /*toolbar结合navigation的使用方法
+        * 1.选用NoActionBar主题.
+        * 2.布局中添加ToolBar,可自定义ToolBar内容
+        * 3.
+        * */
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+        //setupActionBarWithNavController(navController,appBarConfiguration)
     }
 
 
-    override fun onSupportNavigateUp(): Boolean {
-        //val navController = findNavController(R.id.fragmentContainerView)
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
-        return navController.navigateUp() || super.onSupportNavigateUp()
-    }
+    /*    override fun onSupportNavigateUp(): Boolean {
+            val navHostFragment =
+                supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+            val navController = navHostFragment.navController
+            return navController.navigateUp() || super.onSupportNavigateUp()
+        }*/
 }
 
 
