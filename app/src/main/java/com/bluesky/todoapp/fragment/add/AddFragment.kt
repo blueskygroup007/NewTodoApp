@@ -1,6 +1,7 @@
 package com.bluesky.todoapp.fragment.add
 
 import android.os.Bundle
+import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -8,21 +9,32 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
 import com.bluesky.todoapp.R
+import com.bluesky.todoapp.data.models.Priority
+import com.bluesky.todoapp.data.models.ToDoData
+import com.bluesky.todoapp.data.viewmodel.SharedViewModel
+import com.bluesky.todoapp.data.viewmodel.TodoViewModel
+import com.bluesky.todoapp.databinding.FragmentAddBinding
 
 
 class AddFragment : Fragment() {
-
-
+    val todoViewModel: TodoViewModel by viewModels()
+    val sharedViewModel:SharedViewModel by viewModels()
+    var binding: FragmentAddBinding? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add, container, false)
+        //return inflater.inflate(R.layout.fragment_add, container, false)
+        binding = FragmentAddBinding.inflate(inflater, container, false)
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,5 +51,34 @@ class AddFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_menu_fragment_add_check -> {
+                insertDataToDb()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun insertDataToDb() {
+        val title = binding?.etTitleUpdateFragment.toString()
+        val description = binding?.etDescUpdateFragment.toString()
+        val priority = binding?.spUpdateFragment?.selectedItemPosition
+        val validation = sharedViewModel.verifyDataFromUser(title, description)
+        if (validation) {
+            val newData = ToDoData(0,
+                title = title,
+                priority = sharedViewModel.parsePriority(priority!!),
+                description = description)
+            todoViewModel.insertData(newData)
+            Toast.makeText(requireContext(),"new data added!",Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_addFragment_to_listFragment)
+        }else{
+            Toast.makeText(requireContext(),"please fill out all data!",Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
 
 }
