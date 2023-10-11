@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         binding.lifecycleOwner = this
 
-
+        setSupportActionBar(binding.toolbar)
         /*使用fragmentContainerView作为NavHost时,获取NavController的正确方法*/
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
