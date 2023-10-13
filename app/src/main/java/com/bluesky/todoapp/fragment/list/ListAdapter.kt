@@ -1,5 +1,6 @@
 package com.bluesky.todoapp.fragment.list
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +32,7 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.TodoHolder>() {
     }
 
     override fun onBindViewHolder(holder: TodoHolder, position: Int) {
-        //holder.itemView.findViewById<TextView>(R.id.tv_title).text=dataList[position].title
+        Log.d("data======", dataList.toString())
         holder.itemBinding.tvTitle.text = dataList[position].title
         holder.itemBinding.tvDescription.text = dataList[position].description
         when (dataList[position].priority) {

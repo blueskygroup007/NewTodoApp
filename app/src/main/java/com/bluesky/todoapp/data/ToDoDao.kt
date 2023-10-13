@@ -24,8 +24,12 @@ interface ToDoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTodo(data: ToDoData)
 
+    @Query("Delete from todo_table")
+    fun deleteAll()
+
     @Delete
     fun delete(data: ToDoData)
+
     @Query("select * from todo_table order by priority")
-    fun getAllDataFromLow():LiveData<List<ToDoData>>
+    fun getAllDataFromLow(): LiveData<List<ToDoData>>
 }

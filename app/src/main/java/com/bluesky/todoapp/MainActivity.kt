@@ -1,32 +1,18 @@
 package com.bluesky.todoapp
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentActivity
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bluesky.todoapp.databinding.ActivityMainBinding
-import com.bluesky.todoapp.ui.theme.TodoAppTheme
 
 /*AppCompatActivity继承自FragmentActivity,因此才可以用findNavcontroller,
 * setupActionBarWithNavController等方法*/
 class MainActivity : AppCompatActivity() {
-
+    lateinit var appBarConfiguration: AppBarConfiguration
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
@@ -44,19 +30,25 @@ class MainActivity : AppCompatActivity() {
         /*toolbar结合navigation的使用方法
         * 1.选用NoActionBar主题.
         * 2.布局中添加ToolBar,可自定义ToolBar内容
-        * 3.
+        * 3.使用 Toolbar 时，Navigation 组件会自动处理导航按钮的点击事件，因此您无需替换 onSupportNavigateUp()
         * */
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
-        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
-        //setupActionBarWithNavController(navController,appBarConfiguration)
+        setSupportActionBar(binding.toolbar)
+        appBarConfiguration = AppBarConfiguration(navController.graph)
+
+        findViewById<Toolbar>(R.id.toolbar).setupWithNavController(
+            navController,
+            appBarConfiguration
+        )
     }
 
+//使用 Toolbar 时，Navigation 组件会自动处理导航按钮的点击事件，因此您无需替换 onSupportNavigateUp()
 
     /*    override fun onSupportNavigateUp(): Boolean {
             val navHostFragment =
                 supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
             val navController = navHostFragment.navController
-            return navController.navigateUp() || super.onSupportNavigateUp()
+            //val navController = findNavController(R.id.fragmentContainerView)
+            return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
         }*/
 }
 

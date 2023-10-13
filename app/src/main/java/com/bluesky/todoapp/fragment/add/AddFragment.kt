@@ -23,8 +23,8 @@ import com.bluesky.todoapp.databinding.FragmentAddBinding
 
 class AddFragment : Fragment() {
     val todoViewModel: TodoViewModel by viewModels()
-    val sharedViewModel:SharedViewModel by viewModels()
-    lateinit var  binding: FragmentAddBinding
+    val sharedViewModel: SharedViewModel by viewModels()
+    lateinit var binding: FragmentAddBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,37 +44,33 @@ class AddFragment : Fragment() {
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.item_menu_fragment_add_check -> insertDataToDb()
+                }
                 return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-        binding.spUpdateFragment.onItemSelectedListener=sharedViewModel.listener
+        binding.spUpdateFragment.onItemSelectedListener = sharedViewModel.listener
     }
 
-/*    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.item_menu_fragment_add_check -> {
-                insertDataToDb()
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
-    }*/
 
     private fun insertDataToDb() {
-        val title = binding.etTitleUpdateFragment.toString()
-        val description = binding.etDescUpdateFragment.toString()
+        val title = binding.etTitleUpdateFragment.text.toString()
+        val description = binding.etDescUpdateFragment.text.toString()
         val priority = binding.spUpdateFragment.selectedItemPosition
         val validation = sharedViewModel.verifyDataFromUser(title, description)
         if (validation) {
-            val newData = ToDoData(0,
+            val newData = ToDoData(
+                0,
                 title = title,
                 priority = sharedViewModel.parsePriority(priority!!),
-                description = description)
+                description = description
+            )
             todoViewModel.insertData(newData)
-            Toast.makeText(requireContext(),"new data added!",Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "new data added!", Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_addFragment_to_listFragment)
-        }else{
-            Toast.makeText(requireContext(),"please fill out all data!",Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(requireContext(), "please fill out all data!", Toast.LENGTH_SHORT).show()
         }
 
     }
