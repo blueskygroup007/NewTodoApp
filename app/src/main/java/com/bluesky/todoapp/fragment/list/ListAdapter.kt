@@ -1,29 +1,29 @@
 package com.bluesky.todoapp.fragment.list
 
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bluesky.todoapp.R
 import com.bluesky.todoapp.data.models.Priority
 import com.bluesky.todoapp.data.models.ToDoData
-import com.bluesky.todoapp.data.viewmodel.TodoViewModel
 import com.bluesky.todoapp.databinding.ItemRecyclerListBinding
 
 class ListAdapter : RecyclerView.Adapter<ListAdapter.TodoHolder>() {
 
-    var dataList = emptyList<ToDoData>()
+    private var dataList = emptyList<ToDoData>()
 
     class TodoHolder(val itemBinding: ItemRecyclerListBinding) :
         RecyclerView.ViewHolder(itemBinding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoHolder {
-        val inflate =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_recycler_list, parent, false)
-        val itemBinding = ItemRecyclerListBinding.inflate(LayoutInflater.from(parent.context))
+        /*Todo 重点：容易出现item不能充满宽度。原因：binding必须用三个参数的inflate方法获取。*/
+        //val inflate =LayoutInflater.from(parent.context).inflate(R.layout.item_recycler_list, parent, false)
+        //val itemBinding = ItemRecyclerListBinding.inflate(LayoutInflater.from(parent.context))
+        val inflater = LayoutInflater.from(parent.context)
+        val itemBinding = ItemRecyclerListBinding.inflate(inflater, parent, false)
         return TodoHolder(itemBinding)
     }
 
@@ -35,6 +35,15 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.TodoHolder>() {
         Log.d("data======", dataList.toString())
         holder.itemBinding.tvTitle.text = dataList[position].title
         holder.itemBinding.tvDescription.text = dataList[position].description
+        holder.itemBinding.root.setOnClickListener {
+            //普通传参方式
+           val bundle =Bundle()
+            bundle.putSerializable("TodoData",dataList[position])
+            holder.itemBinding.root.findNavController().navigate(R.id.action_listFragment_to_updateFragment,bundle)
+            //navigation的传参方式
+            /*val action=ListFragmentDirections.actionListFragmentToUpdateFragment(dataList[position])
+            holder.itemBinding.root.findNavController().navigate(action)*/
+        }
         when (dataList[position].priority) {
             Priority.HIGH -> holder.itemBinding.cvPriorityIndicator.setCardBackgroundColor(
                 holder.itemBinding.root.context.resources.getColor(
@@ -44,13 +53,13 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.TodoHolder>() {
 
             Priority.MEDIUM -> holder.itemBinding.cvPriorityIndicator.setCardBackgroundColor(
                 holder.itemBinding.root.context.resources.getColor(
-                    R.color.red
+                    R.color.yellow
                 )
             )
 
             Priority.LOW -> holder.itemBinding.cvPriorityIndicator.setCardBackgroundColor(
                 holder.itemBinding.root.context.resources.getColor(
-                    R.color.red
+                    R.color.green
                 )
             )
 

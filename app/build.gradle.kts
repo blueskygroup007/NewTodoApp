@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     //id("kotlin-kapt")
     id("com.google.devtools.ksp")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -60,10 +61,11 @@ android {
 }
 
 dependencies {
-/*    val roomVersion = "2.5.2"
-    implementation("androidx.room:room-runtime:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    annotationProcessor ("androidx.room:room-compiler:$roomVersion")*/
+//implementation("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.4")
+    /*    val roomVersion = "2.5.2"
+       implementation("androidx.room:room-runtime:$roomVersion")
+       implementation("androidx.room:room-ktx:$roomVersion")
+       annotationProcessor ("androidx.room:room-compiler:$roomVersion")*/
 
     val room_version = "2.5.0"
 

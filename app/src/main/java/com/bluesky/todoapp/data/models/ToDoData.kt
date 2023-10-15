@@ -2,6 +2,7 @@ package com.bluesky.todoapp.data.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 /**
  *
@@ -19,4 +20,4 @@ data class ToDoData(
     var priority: Priority,
     var title: String,
     var description: String
-)
+):Serializable

@@ -1,57 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="24dp"
-    tools:context=".fragment.update.UpdateFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <EditText
-        android:id="@+id/et_title_update_fragment"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:background="@drawable/custom_input"
-        android:ems="10"
-        android:hint="@string/str_add_fragment_title"
+    <data>
 
-        android:inputType="text"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    </data>
 
-    <Spinner
-        android:id="@+id/sp_update_fragment"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/custom_input"
-        android:entries="@array/priorities"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_title_update_fragment" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="24dp"
+        tools:context=".fragment.update.UpdateFragment">
 
-    <EditText
-        android:id="@+id/et_desc_update_fragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/custom_input"
-        android:ems="10"
-        android:gravity="start|top"
-        android:hint="@string/str_add_fragment_description"
-        android:inputType="textMultiLine"
-        android:paddingStart="24dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sp_update_fragment" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:id="@+id/et_title_update_fragment"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="@string/str_add_fragment_title"
+
+            android:inputType="text"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/sp_update_fragment"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/custom_input"
+            android:entries="@array/priorities"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_title_update_fragment" />
+
+        <EditText
+            android:id="@+id/et_desc_update_fragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="@string/str_add_fragment_description"
+            android:inputType="textMultiLine"
+            android:paddingStart="24dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sp_update_fragment" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

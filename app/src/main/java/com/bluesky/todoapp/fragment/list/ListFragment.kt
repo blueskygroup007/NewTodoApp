@@ -1,20 +1,23 @@
 package com.bluesky.todoapp.fragment.list
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView.OnItemSelectedListener
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bluesky.todoapp.R
 import com.bluesky.todoapp.data.viewmodel.TodoViewModel
 import com.bluesky.todoapp.databinding.FragmentListBinding
@@ -27,9 +30,7 @@ class ListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        //val view = inflater.inflate(R.layout.fragment_list, container, false)
+    ): View {
         val binding = FragmentListBinding.inflate(inflater, container, false)
         val view = binding.root
         binding.floatingActionButton.setOnClickListener {
@@ -40,8 +41,23 @@ class ListFragment : Fragment() {
             findNavController().navigate(R.id.action_listFragment_to_updateFragment)
         }
 
-        binding.rvList.adapter = mAdapter
         binding.rvList.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvList.setHasFixedSize(true)
+        binding.rvList.adapter = mAdapter
+/*        binding.rvList.addOnItemTouchListener(object: RecyclerView.OnItemTouchListener {
+            //findNavController().navigate(R.id.action_listFragment_to_updateFragment)
+            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                rv.findNavController().navigate(R.id.action_listFragment_to_updateFragment)
+                return true
+            }
+
+            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
+            }
+
+            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
+            }
+
+        })*/
 
         mTodoViewModel.todoData.observe(viewLifecycleOwner) {
             mAdapter.setData(it)

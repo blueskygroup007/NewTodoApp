@@ -5,3 +5,14 @@ plugins {
     id("com.google.devtools.ksp") version "1.8.10-1.0.9" apply false
 
 }
+
+/*Todo 以下是使用navigation-safe-args的必备依赖。注意：版本号必须和其他navigation的版本一致*/
+buildscript {
+    repositories {
+        google()
+    }
+    dependencies {
+        val nav_version = "2.5.3"
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version")
+    }
+}
