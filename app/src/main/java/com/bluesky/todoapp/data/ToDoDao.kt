@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.bluesky.todoapp.data.models.ToDoData
 
 /**
@@ -24,11 +25,14 @@ interface ToDoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTodo(data: ToDoData)
 
+    @Update
+    suspend fun updateTodo(data: ToDoData)
+
     @Query("Delete from todo_table")
-    fun deleteAll()
+    suspend fun deleteAll()
 
     @Delete
-    fun delete(data: ToDoData)
+    suspend fun delete(data: ToDoData)
 
     @Query("select * from todo_table order by priority")
     fun getAllDataFromLow(): LiveData<List<ToDoData>>

@@ -37,12 +37,13 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.TodoHolder>() {
         holder.itemBinding.tvDescription.text = dataList[position].description
         holder.itemBinding.root.setOnClickListener {
             //普通传参方式
-           val bundle =Bundle()
-            bundle.putSerializable("TodoData",dataList[position])
-            holder.itemBinding.root.findNavController().navigate(R.id.action_listFragment_to_updateFragment,bundle)
+/*            val bundle = Bundle()
+            bundle.putSerializable("TodoData", dataList[position])
+            holder.itemBinding.root.findNavController()
+                .navigate(R.id.action_listFragment_to_updateFragment, bundle)*/
             //navigation的传参方式
-            /*val action=ListFragmentDirections.actionListFragmentToUpdateFragment(dataList[position])
-            holder.itemBinding.root.findNavController().navigate(action)*/
+            val action=ListFragmentDirections.actionListFragmentToUpdateFragment(dataList[position])
+            holder.itemBinding.root.findNavController().navigate(action)
         }
         when (dataList[position].priority) {
             Priority.HIGH -> holder.itemBinding.cvPriorityIndicator.setCardBackgroundColor(

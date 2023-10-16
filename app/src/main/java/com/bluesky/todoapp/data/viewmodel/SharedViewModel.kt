@@ -1,6 +1,5 @@
 package com.bluesky.todoapp.data.viewmodel
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.text.TextUtils
 import android.view.View
@@ -34,12 +33,19 @@ class SharedViewModel(application: Application):AndroidViewModel(application) {
         return !(TextUtils.isEmpty(title) || TextUtils.isEmpty(description))
     }
 
-     fun parsePriority(priority: Int): Priority {
+     fun parseIntToPriority(priority: Int): Priority {
         return when (priority) {
             0 -> Priority.HIGH
             1 -> Priority.MEDIUM
             2 -> Priority.LOW
             else -> Priority.LOW
+        }
+    }
+    fun parsePriorityToInt(priority: Priority): Int {
+        return when (priority) {
+            Priority.HIGH -> 0
+            Priority.MEDIUM -> 1
+            Priority.LOW -> 2
         }
     }
 }
