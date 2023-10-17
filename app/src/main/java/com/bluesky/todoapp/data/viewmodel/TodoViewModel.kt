@@ -39,4 +39,10 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
             repository.deleteData(data)
         }
     }
+
+    fun deleteAllData(){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAll()
+        }
+    }
 }
