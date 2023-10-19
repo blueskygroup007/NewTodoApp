@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="args"
+            type="com.bluesky.todoapp.data.models.ToDoData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +22,7 @@
             android:background="@drawable/custom_input"
             android:ems="10"
             android:hint="@string/str_add_fragment_title"
-
+            android:text="@{args.title}"
             android:inputType="text"
             android:paddingStart="24dp"
             android:paddingEnd="24dp"
@@ -37,6 +39,7 @@
             android:entries="@array/priorities"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
+            android:selection="@{args.priority.ordinal()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,6 +50,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
+            android:text="@{args.description}"
             android:background="@drawable/custom_input"
             android:ems="10"
             android:gravity="start|top"

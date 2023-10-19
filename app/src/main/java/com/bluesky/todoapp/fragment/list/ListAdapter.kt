@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bluesky.todoapp.R
 import com.bluesky.todoapp.data.models.Priority
 import com.bluesky.todoapp.data.models.ToDoData
+import com.bluesky.todoapp.data.viewmodel.TodoViewModel
 import com.bluesky.todoapp.databinding.ItemRecyclerListBinding
 
 class ListAdapter : RecyclerView.Adapter<ListAdapter.TodoHolder>() {

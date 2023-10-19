@@ -31,37 +31,39 @@ class ListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentListBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner=this
+        binding.viewmodel=mTodoViewModel
+
+
         val view = binding.root
         binding.floatingActionButton.setOnClickListener {
             findNavController().navigate(R.id.action_listFragment_to_addFragment)
         }
-        binding.root.setOnClickListener {
 
-            findNavController().navigate(R.id.action_listFragment_to_updateFragment)
-        }
 
         binding.rvList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvList.setHasFixedSize(true)
         binding.rvList.adapter = mAdapter
-        /*        binding.rvList.addOnItemTouchListener(object: RecyclerView.OnItemTouchListener {
-                    //findNavController().navigate(R.id.action_listFragment_to_updateFragment)
-                    override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                        rv.findNavController().navigate(R.id.action_listFragment_to_updateFragment)
-                        return true
-                    }
 
-                    override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
-                    }
-
-                    override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
-                    }
-
-                })*/
 
         mTodoViewModel.allTodoData.observe(viewLifecycleOwner) {
             mAdapter.setData(it)
+            mTodoViewModel.todoDataCount.value=it.size
         }
 
+        /*Todo 改用databinding的自定义属性nodataAdapter来实现了*/
+        /*mTodoViewModel.todoDataCount.observe(viewLifecycleOwner) {
+            binding.ivNoData.visibility = if (it == 0) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+            binding.tvNoData.visibility = if (it == 0) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        }*/
         return view
     }
 
@@ -92,7 +94,7 @@ class ListFragment : Fragment() {
         ) { dialog, which ->
             mTodoViewModel.deleteAllData()
             Toast.makeText(requireContext(), "removed successfully!", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_updateFragment_to_listFragment)
+            //findNavController().navigate(R.id.action_updateFragment_to_listFragment)
         }
         builder.setNegativeButton("No", object : DialogInterface.OnClickListener {
             override fun onClick(dialog: DialogInterface?, which: Int) {
@@ -106,5 +108,8 @@ class ListFragment : Fragment() {
         builder.create().show()
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        /*binding=null 有没有必要*/
+    }
 }

@@ -40,6 +40,8 @@ class UpdateFragment : Fragment() {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_update, container, false)
         binding = FragmentUpdateBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner=viewLifecycleOwner
+        binding.args=todoData.currentItemData
         return binding.root
     }
 
@@ -59,15 +61,17 @@ class UpdateFragment : Fragment() {
                 return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-        //val todoData = arguments?.getSerializable("TodoData") as ToDoData
 
-        /*        binding.etTitleUpdateFragment.setText(todoData.title)
+        /* 常规方法获取传递过来的参数*/
+        /*val todoData = arguments?.getSerializable("TodoData") as ToDoData
+               binding.etTitleUpdateFragment.setText(todoData.title)
                 binding.etDescUpdateFragment.setText(todoData.description)
                 binding.spUpdateFragment.setSelection(parsePriority(todoData.priority))*/
 
-        binding.etTitleUpdateFragment.setText(todoData.currentItemData.title)
+        /* 改为databinding方式显示*/
+        /*binding.etTitleUpdateFragment.setText(todoData.currentItemData.title)
         binding.etDescUpdateFragment.setText(todoData.currentItemData.description)
-        binding.spUpdateFragment.setSelection(mSharedViewModel.parsePriorityToInt(todoData.currentItemData.priority))
+        binding.spUpdateFragment.setSelection(mSharedViewModel.parsePriorityToInt(todoData.currentItemData.priority))*/
 
         binding.spUpdateFragment.onItemSelectedListener = mSharedViewModel.listener
     }
