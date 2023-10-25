@@ -17,6 +17,7 @@ import com.bluesky.todoapp.data.models.ToDoData
  */
 @Dao
 interface ToDoDao {
+    /* 不加suspend是因为返回livedata的方法自动异步执行*/
     /*order by id ASC 表示按id排序,ASC表示升序(默认值)*/
     @Query("select * from todo_table order by id ASC")
     fun getAllData(): LiveData<List<ToDoData>>
@@ -36,4 +37,7 @@ interface ToDoDao {
 
     @Query("select * from todo_table order by priority")
     fun getAllDataFromLow(): LiveData<List<ToDoData>>
+
+    @Query("select * from todo_table where title like :searchKey")
+    fun searchDatabase(searchKey: String): LiveData<List<ToDoData>>
 }

@@ -1,6 +1,7 @@
 package com.bluesky.todoapp.data.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.bluesky.todoapp.data.ToDoDao
 import com.bluesky.todoapp.data.models.ToDoData
 
@@ -11,6 +12,7 @@ import com.bluesky.todoapp.data.models.ToDoData
  * Description:
  */
 class TodoRepository(val todoDao: ToDoDao) {
+
     val getAllData: LiveData<List<ToDoData>> = todoDao.getAllData()
 
     /*里面的insertTodo是suspend方法,因此该方法也要是suspend*/
@@ -26,7 +28,11 @@ class TodoRepository(val todoDao: ToDoDao) {
         todoDao.delete(toDoData)
     }
 
-    suspend fun deleteAll(){
+    suspend fun deleteAll() {
         todoDao.deleteAll()
+    }
+
+    fun searchDatabase(searchKey: String): LiveData<List<ToDoData>> {
+        return todoDao.searchDatabase(searchKey)
     }
 }

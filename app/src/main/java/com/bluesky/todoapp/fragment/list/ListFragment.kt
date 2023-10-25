@@ -2,6 +2,7 @@ package com.bluesky.todoapp.fragment.list
 
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.SearchView
 import androidx.compose.material3.Snackbar
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -20,6 +22,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.util.query
 import com.bluesky.todoapp.R
 import com.bluesky.todoapp.data.models.ToDoData
 import com.bluesky.todoapp.data.viewmodel.TodoViewModel
@@ -27,10 +30,13 @@ import com.bluesky.todoapp.databinding.FragmentListBinding
 import com.google.android.material.snackbar.Snackbar
 
 
-class ListFragment : Fragment() {
+class ListFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private val mTodoViewModel: TodoViewModel by viewModels()
+
     private val mAdapter: ListAdapter by lazy { ListAdapter() }
+
+    //private val mAdapter: TodoAdapter by lazy { TodoAdapter() }
     lateinit var binding: FragmentListBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +52,6 @@ class ListFragment : Fragment() {
             findNavController().navigate(R.id.action_listFragment_to_addFragment)
         }
 
-
         binding.rvList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvList.setHasFixedSize(true)
         binding.rvList.adapter = mAdapter
@@ -54,6 +59,8 @@ class ListFragment : Fragment() {
 
         mTodoViewModel.allTodoData.observe(viewLifecycleOwner) {
             mAdapter.setData(it)
+            Log.d("observer:", "数量=${it.size}")
+            //mAdapter.submitList(it)//官方的DiffUtil的ListAdapter的写法(不需要setData)
             mTodoViewModel.todoDataCount.value = it.size
         }
 
@@ -70,6 +77,8 @@ class ListFragment : Fragment() {
                 View.GONE
             }
         }*/
+
+
         return view
     }
 
@@ -80,6 +89,9 @@ class ListFragment : Fragment() {
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_fragment_list, menu)
+                val search = menu.findItem(R.id.item_menu_fragment_list_search)
+                val actionView = search.actionView as SearchView
+                actionView.setOnQueryTextListener(this@ListFragment)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -108,6 +120,7 @@ class ListFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 //删除item
                 val itemToDelete = mAdapter.dataList[viewHolder.adapterPosition]
+                //val itemToDelete = mAdapter.currentList[viewHolder.adapterPosition]
                 mTodoViewModel.deleteData(itemToDelete)
                 //mAdapter.notifyItemRemoved(viewHolder.adapterPosition)//Todo 只刷新删除行,不能用notifyitemChanged(),这个是变化而非移除
                 Toast.makeText(
@@ -157,5 +170,25 @@ class ListFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         /*binding=null 有没有必要*/
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        query?.let {
+            mTodoViewModel.searchDatabase("%${it}%").observe(this) {
+                mAdapter.setData(it)
+                mTodoViewModel.todoDataCount.value = it.size
+            }
+        }
+        return true
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        newText?.let {
+            mTodoViewModel.searchDatabase("%${it}%").observe(this) {
+                mAdapter.setData(it)
+                mTodoViewModel.todoDataCount.value = it.size
+            }
+        }
+        return true
     }
 }

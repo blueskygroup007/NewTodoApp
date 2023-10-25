@@ -15,17 +15,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TodoViewModel(application: Application) : AndroidViewModel(application) {
-    val todoDao: ToDoDao
-    val repository: TodoRepository
-    val allTodoData: LiveData<List<ToDoData>>
-    val todoDataCount : MutableLiveData<Int> =MutableLiveData(0)
+    private val todoDao: ToDoDao = ToDoDatabase.getDatabase(application).todoDao()
+    private val repository: TodoRepository = TodoRepository(todoDao)
+    val allTodoData: LiveData<List<ToDoData>> = repository.getAllData
+    val todoDataCount: MutableLiveData<Int> = MutableLiveData(allTodoData.value?.size)
 
-    init {
-        todoDao = ToDoDatabase.getDatabase(application).todoDao()
-        repository = TodoRepository(todoDao)
-        allTodoData = repository.getAllData
-        //todoDataCount.value=allTodoData.value?.size
-    }
+    /*    init {
+            todoDao = ToDoDatabase.getDatabase(application).todoDao()
+            repository = TodoRepository(todoDao)
+            allTodoData = repository.getAllData
+            //todoDataCount.value=allTodoData.value?.size
+        }*/
 
     fun insertData(data: ToDoData) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -45,9 +45,13 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun deleteAllData(){
+    fun deleteAllData() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteAll()
         }
+    }
+
+    fun searchDatabase(searchKey: String): LiveData<List<ToDoData>> {
+        return repository.searchDatabase(searchKey)
     }
 }

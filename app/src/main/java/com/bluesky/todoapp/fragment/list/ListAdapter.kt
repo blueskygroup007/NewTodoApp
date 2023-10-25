@@ -4,6 +4,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.DiffUtil.DiffResult
 import androidx.recyclerview.widget.RecyclerView
 import com.bluesky.todoapp.R
 import com.bluesky.todoapp.data.models.Priority
@@ -90,7 +92,17 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.TodoHolder>() {
     }
 
     fun setData(data: List<ToDoData>) {
-        dataList = data
-        notifyDataSetChanged()
+        /* Todo 第一次刷新时,data=null.因此加上判断.只有当data有数据时,才使用DiffUtil
+        * */
+        Log.d("setdata:", "olddata=${dataList}  newdata=${data}")
+        if (dataList.isNotEmpty()) {
+            val todoDiffUtil = TodoDiffUtil(dataList, data)
+            val todoDiffResult = DiffUtil.calculateDiff(todoDiffUtil)
+            todoDiffResult.dispatchUpdatesTo(this)
+            dataList = data
+        } else {
+            dataList = data
+            notifyDataSetChanged()
+        }
     }
 }
