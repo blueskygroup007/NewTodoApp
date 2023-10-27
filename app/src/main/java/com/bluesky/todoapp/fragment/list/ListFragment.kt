@@ -35,6 +35,8 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
     private val mTodoViewModel: TodoViewModel by viewModels()
 
     private val mAdapter: ListAdapter by lazy { ListAdapter() }
+    private var sortByHighPriority: List<ToDoData> = emptyList()
+    private var sortByLowPriority: List<ToDoData> = emptyList()
 
     //private val mAdapter: TodoAdapter by lazy { TodoAdapter() }
     lateinit var binding: FragmentListBinding
@@ -62,6 +64,13 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
             Log.d("observer:", "数量=${it.size}")
             //mAdapter.submitList(it)//官方的DiffUtil的ListAdapter的写法(不需要setData)
             mTodoViewModel.todoDataCount.value = it.size
+        }
+
+        mTodoViewModel.sortByHighPriority.observe(this.viewLifecycleOwner) {
+            sortByHighPriority = it
+        }
+        mTodoViewModel.sortByLowPriority.observe(viewLifecycleOwner) {
+            sortByLowPriority = it
         }
 
         /*Todo 改用databinding的自定义属性nodataAdapter来实现了*/
@@ -98,6 +107,17 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
                 when (menuItem.itemId) {
                     R.id.item_menu_delete_all -> {
                         deleteAllitem()
+                    }
+
+                    R.id.item_menu_sort_priority_high -> {
+                        /*Todo 不在这里observer，是为了避免重复调用监听。但当插入和删除时，adapter还是会被getalldata的监听传递数据。
+                        * 要想统一，解决方案就是使用一个查询函数，拼接不同的key以应对不同的排序。
+                        * */
+                        mAdapter.setData(sortByHighPriority)
+                    }
+
+                    R.id.item_menu_sort_priority_low -> {
+                        mAdapter.setData(sortByLowPriority)
                     }
                 }
                 return true
@@ -150,7 +170,7 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
         val builder = AlertDialog.Builder(requireContext())
         builder.setPositiveButton(
             "Yes"
-        ) { dialog, which ->
+        ) { _, _ ->
             mTodoViewModel.deleteAllData()
             Toast.makeText(requireContext(), "removed successfully!", Toast.LENGTH_SHORT).show()
             //findNavController().navigate(R.id.action_updateFragment_to_listFragment)

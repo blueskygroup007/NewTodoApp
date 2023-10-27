@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
-    id("com.google.devtools.ksp")
+    /*id("com.google.devtools.ksp")*/
     id("androidx.navigation.safeargs.kotlin")
 }
 
@@ -33,15 +33,16 @@ android {
         }
     }
 
-/*    kotlin{
-        jvmToolchain(8)
-    }*/
+    /*    kotlin{
+            jvmToolchain(8)
+        }*/
 
     kotlinOptions {
         jvmTarget = "17"
     }
     buildFeatures {
         compose = true
+        //noinspection DataBindingWithoutKapt
         dataBinding = true
     }
     composeOptions {
@@ -55,32 +56,29 @@ android {
     compileOptions {
         /*sourceCompatibility(11)
         targetCompatibility(11)*/
-        sourceCompatibility=org.gradle.api.JavaVersion.VERSION_17
-        targetCompatibility=org.gradle.api.JavaVersion.VERSION_17
+        sourceCompatibility = org.gradle.api.JavaVersion.VERSION_17
+        targetCompatibility = org.gradle.api.JavaVersion.VERSION_17
     }
+    buildToolsVersion = "33.0.1"
 }
 
 dependencies {
-    /*    val roomVersion = "2.5.2"
-       implementation("androidx.room:room-runtime:$roomVersion")
-       implementation("androidx.room:room-ktx:$roomVersion")
-       annotationProcessor ("androidx.room:room-compiler:$roomVersion")*/
+
 
     val room_version = "2.5.0"
-
+    val navigation_version = "2.5.3"
     implementation("androidx.room:room-runtime:$room_version")
 
-    // To use Kotlin annotation processing tool (kapt)
-    //kapt("androidx.room:room-compiler:$room_version")
-    // To use Kotlin Symbol Processing (KSP)
-    ksp("androidx.room:room-compiler:$room_version")
+
+    //ksp("androidx.room:room-compiler:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
 
-    implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
-    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+    implementation("androidx.navigation:navigation-fragment-ktx:$navigation_version")
+    implementation("androidx.navigation:navigation-ui-ktx:$navigation_version")
     implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation("androidx.activity:activity-compose:1.7.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
+    implementation("androidx.activity:activity-compose:1.6.1")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")

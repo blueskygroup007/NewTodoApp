@@ -13,7 +13,10 @@ import com.bluesky.todoapp.data.models.ToDoData
  */
 class TodoRepository(val todoDao: ToDoDao) {
 
+    /* Todo 思考以下，为什么这里的livedata要在repository这里就提前获取，而不担心后续数据变化了*/
     val getAllData: LiveData<List<ToDoData>> = todoDao.getAllData()
+    val sortByHighPriority = todoDao.sortByHighPriority()
+    val sortByLowPriority = todoDao.sortByLowPriority()
 
     /*里面的insertTodo是suspend方法,因此该方法也要是suspend*/
     suspend fun insertData(toDoData: ToDoData) {

@@ -40,8 +40,8 @@ class UpdateFragment : Fragment() {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_update, container, false)
         binding = FragmentUpdateBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner=viewLifecycleOwner
-        binding.args=todoData.currentItemData
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.args = todoData.currentItemData
         return binding.root
     }
 
@@ -80,7 +80,7 @@ class UpdateFragment : Fragment() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setPositiveButton(
             "Yes"
-        ) { dialog, which ->
+        ) { _, _ ->
             mTodoViewModel.deleteData(todoData.currentItemData)
             Toast.makeText(requireContext(), "removed successfully!", Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_updateFragment_to_listFragment)
@@ -113,6 +113,9 @@ class UpdateFragment : Fragment() {
             )
             mTodoViewModel.updateData(updateItem)
             Toast.makeText(requireContext(), "update successfully!", Toast.LENGTH_SHORT).show()
+            /*Todo 如果要导航回去的话，要在navigation布局文件中，设置pop behavior下的参数。否则按返回键会报错（按左上角导航键没事）*/
+            findNavController().navigate(R.id.action_updateFragment_to_listFragment)
+
         } else {
             Toast.makeText(requireContext(), "update failed!", Toast.LENGTH_SHORT).show()
 

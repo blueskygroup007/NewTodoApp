@@ -19,7 +19,8 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: TodoRepository = TodoRepository(todoDao)
     val allTodoData: LiveData<List<ToDoData>> = repository.getAllData
     val todoDataCount: MutableLiveData<Int> = MutableLiveData(allTodoData.value?.size)
-
+    val sortByHighPriority = repository.sortByHighPriority
+    val sortByLowPriority = repository.sortByLowPriority
     /*    init {
             todoDao = ToDoDatabase.getDatabase(application).todoDao()
             repository = TodoRepository(todoDao)

@@ -63,7 +63,7 @@ class AddFragment : Fragment() {
             val newData = ToDoData(
                 0,
                 title = title,
-                priority = sharedViewModel.parseIntToPriority(priority!!),
+                priority = sharedViewModel.parseIntToPriority(priority),
                 description = description
             )
             todoViewModel.insertData(newData)

@@ -7,6 +7,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.bluesky.todoapp.data.models.Priority
 import com.bluesky.todoapp.data.models.ToDoData
 
 /**
@@ -40,4 +41,10 @@ interface ToDoDao {
 
     @Query("select * from todo_table where title like :searchKey")
     fun searchDatabase(searchKey: String): LiveData<List<ToDoData>>
+
+    @Query("select * from todo_table order by case when priority like 'H%' then 1 when priority like 'M%' then 2 when priority like 'L%' then 3 end")
+    fun sortByHighPriority(): LiveData<List<ToDoData>>
+
+    @Query("select * from todo_table order by case when priority like 'L%' then 1 when priority like 'M%' then 2 when priority like 'H%' then 3 end")
+    fun sortByLowPriority(): LiveData<List<ToDoData>>
 }
